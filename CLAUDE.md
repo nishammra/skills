@@ -12,26 +12,29 @@ The repository is **not** a traditional software application. It is a curated li
 ## Repository Structure
 
 ```
-skills/                        # All skills live here (16 total)
-├── algorithmic-art/           # p5.js generative art
-├── brand-guidelines/          # Brand styling guidance
-├── canvas-design/             # Visual canvas creation
-├── doc-coauthoring/           # Document co-authoring workflows
-├── docx/                      # Word document creation/editing (proprietary)
-├── frontend-design/           # UI/frontend design
-├── internal-comms/            # Internal communications templates
-├── mcp-builder/               # MCP server development guide
-├── pdf/                       # PDF manipulation (proprietary)
-├── pptx/                      # PowerPoint creation/editing (proprietary)
-├── skill-creator/             # Framework for creating new skills
-├── slack-gif-creator/         # Animated GIF creation for Slack
-├── theme-factory/             # Theme/styling for artifacts
-├── web-artifacts-builder/     # React/Vite artifact builder
-├── webapp-testing/            # Playwright web app testing
-└── xlsx/                      # Excel spreadsheet operations (proprietary)
+CLAUDE.md                        # This file — AI assistant guide
+README.md                        # Repository overview and getting started
+THIRD_PARTY_NOTICES.md           # Third-party license attributions
 .claude-plugin/marketplace.json  # Plugin definitions for Claude Code
 spec/                            # Links to Agent Skills specification
 template/                        # Skill template for new skills
+skills/                          # All skills live here (16 total)
+├── algorithmic-art/             # p5.js generative art with seeded randomness
+├── brand-guidelines/            # Anthropic brand colors and typography
+├── canvas-design/               # Visual art in .png and .pdf using design philosophy
+├── doc-coauthoring/             # Structured workflow for co-authoring documentation
+├── docx/                        # Word document creation/editing (proprietary)
+├── frontend-design/             # Production-grade frontend interfaces
+├── internal-comms/              # Internal communications (status reports, newsletters, FAQs)
+├── mcp-builder/                 # MCP server development guide
+├── pdf/                         # PDF manipulation (proprietary)
+├── pptx/                        # PowerPoint creation/editing (proprietary)
+├── skill-creator/               # Framework for creating new skills
+├── slack-gif-creator/           # Animated GIF creation for Slack
+├── theme-factory/               # Pre-set themes (colors/fonts) for artifacts
+├── web-artifacts-builder/       # React/Vite artifact builder
+├── webapp-testing/              # Playwright web app testing
+└── xlsx/                        # Excel spreadsheet operations (proprietary)
 ```
 
 ## Skill Anatomy
@@ -108,37 +111,50 @@ python skills/skill-creator/scripts/package_skill.py <path/to/skill-folder>
 2. Test by using the skill in Claude
 3. Re-package if distributing: `python skills/skill-creator/scripts/package_skill.py <skill-folder>`
 
-### Quick Validation
+### Validation
 ```bash
 python skills/skill-creator/scripts/quick_validate.py <skill-folder>
 ```
 
+Validates: SKILL.md presence, frontmatter format (name, description fields), and directory structure.
+
 ## Common Script Patterns
 
+All paths below are relative to the repository root.
+
 ### OOXML Document Processing (docx/pptx)
+
+Both `skills/docx/` and `skills/pptx/` contain an `ooxml/scripts/` subdirectory with identical tooling:
+
 ```bash
-python ooxml/scripts/unpack.py <file> <output-dir>   # Unzip to XML
+python skills/docx/ooxml/scripts/unpack.py <file> <output-dir>   # Unzip to XML
 # Edit XML files
-python ooxml/scripts/pack.py <input-dir> <output-file>  # Repack
-python ooxml/scripts/validate.py <file>                  # Validate
+python skills/docx/ooxml/scripts/pack.py <input-dir> <output-file>  # Repack
+python skills/docx/ooxml/scripts/validate.py <file>                  # Validate
+# Same scripts exist under skills/pptx/ooxml/scripts/
 ```
 
 ### PDF Operations
 ```bash
-python scripts/extract_form_field_info.py <pdf>
-python scripts/fill_fillable_fields.py <pdf> <output>
-python scripts/check_bounding_boxes.py <pdf>
+python skills/pdf/scripts/extract_form_field_info.py <pdf>
+python skills/pdf/scripts/fill_fillable_fields.py <pdf> <output>
+python skills/pdf/scripts/check_bounding_boxes.py <pdf>
 ```
 
 ### Web Artifacts (React/Vite)
 ```bash
-bash scripts/init-artifact.sh <project-name>
-bash scripts/bundle-artifact.sh   # Produces bundle.html
+bash skills/web-artifacts-builder/scripts/init-artifact.sh <project-name>
+bash skills/web-artifacts-builder/scripts/bundle-artifact.sh   # Produces bundle.html
 ```
 
 ### Web App Testing (Playwright)
 ```bash
-python scripts/with_server.py --server "npm run dev" --port 5173 -- python automation.py
+python skills/webapp-testing/scripts/with_server.py --server "npm run dev" --port 5173 -- python automation.py
+```
+
+### Excel Recalculation
+```bash
+python skills/xlsx/recalc.py <file>   # Recalculate formulas (requires LibreOffice)
 ```
 
 ## Dependencies
@@ -156,10 +172,11 @@ No centralized test suite. Testing is per-skill:
 - `skills/pdf/scripts/check_bounding_boxes_test.py` — unit tests for PDF form field detection
 - `skills/webapp-testing/` — Playwright-based integration testing
 - `skills/mcp-builder/scripts/evaluation.py` — evaluation framework for MCP servers
-- Skills are primarily tested through actual usage
+- `skills/skill-creator/scripts/quick_validate.py` — validates skill structure and SKILL.md format
+- Skills are primarily tested through actual usage in Claude
 
 ## Git Conventions
 
 - Structured commit messages with issue references (e.g., `Add doc-coauthoring skill (#134)`)
 - No pre-commit hooks or CI/CD pipelines configured
-- `.gitignore` excludes: `__pycache__/`, `.DS_Store`, `.idea/`, `.vscode/`
+- `.gitignore` excludes: `.DS_Store`, `__pycache__/`, `.idea/`, `.vscode/`
