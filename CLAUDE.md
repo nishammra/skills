@@ -12,26 +12,29 @@ The repository is **not** a traditional software application. It is a curated li
 ## Repository Structure
 
 ```
-skills/                        # All skills live here (16 total)
-├── algorithmic-art/           # p5.js generative art
-├── brand-guidelines/          # Brand styling guidance
-├── canvas-design/             # Visual canvas creation
-├── doc-coauthoring/           # Document co-authoring workflows
-├── docx/                      # Word document creation/editing (proprietary)
-├── frontend-design/           # UI/frontend design
-├── internal-comms/            # Internal communications templates
-├── mcp-builder/               # MCP server development guide
-├── pdf/                       # PDF manipulation (proprietary)
-├── pptx/                      # PowerPoint creation/editing (proprietary)
-├── skill-creator/             # Framework for creating new skills
-├── slack-gif-creator/         # Animated GIF creation for Slack
-├── theme-factory/             # Theme/styling for artifacts
-├── web-artifacts-builder/     # React/Vite artifact builder
-├── webapp-testing/            # Playwright web app testing
-└── xlsx/                      # Excel spreadsheet operations (proprietary)
+CLAUDE.md                        # This file — codebase guide for AI assistants
+README.md                        # Repository overview and usage instructions
+THIRD_PARTY_NOTICES.md           # License notices for third-party dependencies
 .claude-plugin/marketplace.json  # Plugin definitions for Claude Code
 spec/                            # Links to Agent Skills specification
 template/                        # Skill template for new skills
+skills/                          # All skills live here (16 total)
+├── algorithmic-art/             # p5.js generative art
+├── brand-guidelines/            # Brand styling guidance
+├── canvas-design/               # Visual canvas creation
+├── doc-coauthoring/             # Document co-authoring workflows
+├── docx/                        # Word document creation/editing (proprietary)
+├── frontend-design/             # UI/frontend design
+├── internal-comms/              # Internal communications templates
+├── mcp-builder/                 # MCP server development guide
+├── pdf/                         # PDF manipulation (proprietary)
+├── pptx/                        # PowerPoint creation/editing (proprietary)
+├── skill-creator/               # Framework for creating new skills
+├── slack-gif-creator/           # Animated GIF creation for Slack
+├── theme-factory/               # Theme/styling for artifacts
+├── web-artifacts-builder/       # React/Vite artifact builder
+├── webapp-testing/              # Playwright web app testing
+└── xlsx/                        # Excel spreadsheet operations (proprietary)
 ```
 
 ## Skill Anatomy
@@ -117,6 +120,7 @@ python skills/skill-creator/scripts/quick_validate.py <skill-folder>
 
 ### OOXML Document Processing (docx/pptx)
 ```bash
+# Run from within skills/docx/ or skills/pptx/
 python ooxml/scripts/unpack.py <file> <output-dir>   # Unzip to XML
 # Edit XML files
 python ooxml/scripts/pack.py <input-dir> <output-file>  # Repack
@@ -143,7 +147,11 @@ python scripts/with_server.py --server "npm run dev" --port 5173 -- python autom
 
 ## Dependencies
 
-No unified package manager at the repo root. Each skill manages its own dependencies:
+No unified package manager at the repo root. Each skill manages its own dependencies.
+
+Some skills include their own `requirements.txt` (e.g., `skills/slack-gif-creator/requirements.txt`, `skills/mcp-builder/scripts/requirements.txt`).
+
+Common dependencies across skills:
 
 - **Python**: pypdf, pdfplumber, reportlab, python-pptx, python-docx, openpyxl, PIL/Pillow, pandas, numpy, playwright, imageio
 - **JavaScript/Node**: React 18, TypeScript, Vite, Parcel, Tailwind CSS, shadcn/ui, p5.js
